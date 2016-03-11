@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Geotrigger Editor</title>
+
+  <!-- css: dependencies -->
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/leaflet.esri.geocoder/1.0.2/esri-leaflet-geocoder.css">
+
+  <!-- css: main -->
+  <link rel="stylesheet" href="dist/css/geotrigger-editor.css">
+
+  <!-- js: legacy support -->
+  <!--[if lte IE 8]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"></script>
+  <![endif]-->
+
+  <style>
+    /* - - - - - - - - - - Basic Reset - - - - - - - - - - */
+    html {
+      overflow-y: scroll;
+      font-size: 100%;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+    article, aside, details, figcaption, figure, footer, header, hgroup, nav, section { display: block; }
+    audio[controls], canvas, video { display: inline-block; zoom: 1; }
+    a:hover, a:active { outline: 0; }
+    svg:not(:root) {
+        overflow: hidden;
+    }
+    a, abbr, acronym, address, b, big, cite, code, del, em, i, ins, kbd, mark, output, q,
+    samp, small, strike, strong, sub, sup, time, tt, var,
+    dfn, dl, dt, dd, ol, ul, li,
+    blockquote, h1, h2, h3, h4, h5, h6, p, pre,
+    applet, canvas, embed, figure, figcaption, iframe, img, object {
+      padding: 0;
+      margin: 0;
+      font: inherit;
+      font-size: 100%;
+      line-height: 1.0;
+      vertical-align: baseline;
+      background: transparent;
+      border: 0;
+    }
+    /* - - - - - - - - - Basic Typography - - - - - - - */
+    body {
+      font-family: "Open Sans", Arial, Helvetica, sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      color: #666666;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: "Open Sans", Arial, Helvetica, sans-serif;
+      font-weight: 600;
+      font-size: 22px;
+      color: #3b3b3b;
+      line-height: 1em;
+    }
+    h5 {
+      font-size: 1.25em;
+      line-height: 1.5em;
+    }
+    html {
+      background: #9CA5AD; /* Old browsers */
+      background: -moz-linear-gradient(top, #596a72 0%, #9ca5ad 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#596a72), color-stop(100%,#9ca5ad)); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top, #596a72 0%,#9ca5ad 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, #596a72 0%,#9ca5ad 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, #596a72 0%,#9ca5ad 100%); /* IE10+ */
+      background: linear-gradient(to bottom, #596a72 0%,#9ca5ad 100%); /* W3C */
+      height: 100%;
+    }
+    html, body {
+      padding: 0;
+      margin: 0;
+      line-height: 1;
+    }
+    #site-header {
+      background: #3E494F;
+      display: none;
+      height: 50px;
+      border-bottom: 1px solid #355;
+      border-bottom: 1px solid rgba(50,100,100,.5);
+      font-family: "Open Sans", Arial, Helvetica, sans-serif;
+    }
+    #site-header h1 {
+      color: #fff;
+      float: left;
+      font-size: 22px;
+      font-weight: 100;
+      padding: 12px 0 0 24px;
+    }
+    .nav-right {
+      list-style: none;
+      float: right;
+      padding: 16px 24px 0 0;
+    }
+    .nav-right li {
+      display: inline-block;
+      float: left;
+    }
+    .nav-right a {
+      font-size: 15px;
+      font-weight: 400;
+      color: turquoise;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .nav-right a:hover {
+      text-decoration: underline;
+    }
+    .clear-session {
+      display: none;
+    }
+    .cors-warning {
+      padding: 20px;
+      background: #eee;
+      border-radius: 5px;
+    }
+    #example {
+      background: #fff;
+      display: none;
+      padding: 24px;
+      margin: 50px auto 0;
+      width: 400px;
+      position: relative;
+    }
+    #example h2 {
+      color: #333;
+      text-align: center;
+      width: 100%;
+      font-size: 22px;
+      font-weight: 100;
+      padding: 12px 0 24px 0;
+    }
+    #example p {
+      line-height: 1.7em;
+      margin-bottom: 1.7em;
+    }
+    #example input {
+      background: #eee;
+      font-family: "Open Sans", Arial, Helvetica, sans;
+      display: block;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-size: 16px;
+      padding: 10px;
+      margin: 12px auto;
+      width: 376px;
+    }
+    #example button {
+      width: 188px;
+    }
+    #example a {
+      color: #1a9b81;
+    }
+    #example a:hover {
+      color: #136f5d;
+    }
+    #example .what {
+      text-align: center;
+      display: inline-block;
+      width: 188px;
+    }
+    #example ul {
+      padding-top: 24px;
+      list-style-type: none;
+    }
+    #example li {
+      margin-bottom: 12px;
+    }
+    #example li a {
+      text-align: left;
+    }
+    #gt-editor {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+    .hide {
+      display: none !important;
+    }
+    .engage-btn {
+      display: inline-block;
+      padding: 1em;
+      margin-top: 1em;
+      font-family: "Open Sans", Arial, Helvetica, sans-serif;
+      font-size: 0.85em;
+      color: white;
+      text-decoration: none;
+      background-color: #3b3b3b;
+      background-color: #1a9b81;
+      border: 1px solid #222222;
+      border: 1px solid #136f5d;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      cursor: pointer;
+      -webkit-transition: background-color 200ms linear;
+      -moz-transition: background-color 200ms linear;
+      -o-transition: background-color 200ms linear;
+      transition: background-color 200ms linear;
+      -ms-border-radius: 3px;
+      -o-border-radius: 3px;
+    }
+    .engage-btn:hover {
+      background-color: #136f5d;
+    }
+  </style>
+</head>
+<body>
+  <header id="site-header">
+    <h1>Geotrigger Editor</h1>
+    <ul class="nav-right">
+      <li>
+        <a class="clear-session">&times; clear session</a>
+      </li>
+    </ul>
+  </header>
+
+  <form id="example">
+    <h2>Geotrigger Editor</h2>
+    <div class="engage hide">
+      <input id="client-id" type="text" placeholder="Client ID">
+      <input id="client-secret" type="text" placeholder="Client Secret">
+      <button class="engage-btn">Engage</button>
+      <a class="what" href="https://developers.arcgis.com/en/geotrigger-service/guide/geotrigger-editor/">What's This?</a>
+    </div>
+  </form>
+
+  <div id="gt-editor"></div>
+  <br><br><br>
+  <img src="banner.jpg" alt="geoTollways" height="150" width="1000"> 
+  <img src="geo.gif" alt="geoTollways" height="150" width="200">
+  <!-- js: cdn dependencies -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" ></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.0/backbone-min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.marionette/1.4.1-bundled/backbone.marionette.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.runtime.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.js"></script>
+
+  <!-- js: local dependencies -->
+  <script src="node_modules/geotrigger-js/geotrigger.js"></script>
+  <script src="//cdn.jsdelivr.net/leaflet.esri/1.0.1/esri-leaflet.js"></script>
+  <script src="//cdn.jsdelivr.net/leaflet.esri.geocoder/1.0.2/esri-leaflet-geocoder.js"></script>
+
+  <!-- js: main -->
+  <script src="dist/js/geotrigger-editor.js"></script>
+
+  <!-- js: initializer -->
+  <script>
+  (function(){
+    var config = {};
+    config.session = {};
+    // var config = {
+    //   session: { // required
+    //     clientId: 'XXXXXX', // required
+    //     clientSecret: 'XXXXXX', // required
+    //     proxy: '/path/to/proxy/' // optional, default false (required for IE8/9)
+    //   }
+    //   the following are optional, defaults are in src/js/modules/config.js
+    //   map: {
+    //     center: [0, 0],
+    //     zoom: 2,
+    //     basemap: 'Streets', // default 'Streets'
+    //     basemaps: ['Gray','GrayLabels'], // overrides `basemap`
+    //     options: {
+    //       opacity: 0.7, // default 1
+    //       detectRetina: true // default false
+    //     }
+    //   },
+    //   fitOnLoad: false, // default true
+    //   imagePath: '/images', // default '/images'
+    //   sharedOptions: {},
+    //   editOptions: {},
+    //   highlightOptions: {}
+    // };
+    function findLocalItems (query) {
+      var results = [];
+      for (var i in localStorage) {
+        if (localStorage.hasOwnProperty(i)) {
+          if (i.match(query) || (!query && typeof i === 'string')) {
+            value = JSON.parse(localStorage.getItem(i));
+            results.push({key:i,val:value});
+          }
+        }
+      }
+      return results;
+    }
+    function bindClearSession () {
+      $('.clear-session').on('click', function(e){
+        e.preventDefault();
+        Geotrigger.Editor.API.session.destroy();
+        window.location.reload(true);
+      }).show();
+    }
+    function bindForm () {
+      $('#example').submit(function(e){
+        e.preventDefault();
+        config.session.clientId = $('#client-id').val();
+        config.session.clientSecret = $('#client-secret').val();
+        $(this).hide();
+        $('#gt-editor').show();
+        $('#site-header').show();
+        Geotrigger.Editor.start(config);
+        bindClearSession();
+      });
+    }
+    function init() {
+      var CORS = !!(window.XMLHttpRequest && 'withCredentials' in new XMLHttpRequest());
+      if (CORS) {
+        $('.engage').removeClass('hide');
+      } else {
+        $('#example').show();
+        $('.cors-warning').removeClass('hide');
+        return;
+      }
+      // get geotrigger application items from localStorage
+      var items = findLocalItems('geotriggers_application_');
+      // just use the first one for now
+      var item = items[0];
+      if (item && item.val && item.val.clientId && item.val.clientSecret) {
+        config.session.clientId = item.val.clientId;
+        config.session.clientSecret = item.val.clientSecret;
+        $('#gt-editor').show();
+        $('#site-header').show();
+        Geotrigger.Editor.start(config);
+        bindClearSession();
+      } else {
+        bindForm();
+        $('#example').show();
+      }
+    }
+    $(init);
+  })();
+  </script>
+</body>
+</html>

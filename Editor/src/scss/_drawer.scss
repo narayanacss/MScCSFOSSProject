@@ -1,0 +1,17 @@
+/* - - - - - - - - - - Drawer - - - - - - - - - - */
+.gt-region .gt-drawer {
+  box-sizing:border-box;
+  position:absolute;
+  z-index:2;
+  width:40%;
+  overflow:hidden;
+  top:0;
+  bottom:0;
+  left:70px;
+  display:none;
+  background-color:transparent;
+  @include box-shadow(0 0 12px rgba(0,0,0,0.2));
+  &.gt-open {
+    display: block;
+  }
+}

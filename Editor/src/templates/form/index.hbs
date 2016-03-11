@@ -1,0 +1,72 @@
+<div class='gt-panel-top-bar'>
+  <a href='#list' class='gt-panel-top-bar-button gt-back-to-list'></a>
+  <h3>{{#if triggerId}}{{triggerId}}{{else}}Create{{/if}}</h3>
+  <a href='#' class='gt-panel-top-bar-button gt-close-drawer'></a>
+</div>
+
+<div class='gt-panel-content'>
+  <form class='gt-form gt-form-edit'>
+
+    <section class='gt-form-section gt-conditions'>
+      <div class="gt-property">
+        <div class="gt-property-header">When a device with one of the following tags..</div>
+
+        <div class="gt-property-item">
+          <textarea class='gt-input' name='tags' placeholder='enter any number of tags separated by commas'>{{tagList tags}}</textarea>
+        </div>
+
+        <div class="gt-property-item">
+            <select name='condition[direction]' class='gt-direction'>
+              {{#select condition.direction}}
+              <option value='enter'>enters</option>
+              <option value='leave'>leaves</option>
+              {{/select}}
+            </select>
+
+            {{#if condition}}
+            <span class="gt-shape-indicator">a {{shape condition}}</span>
+            {{else}}
+            <span class="gt-shape-indicator">a...</span>
+            {{/if}}
+            <input name="geometry-type" type="hidden" value="{{shape condition}}">
+        </div>
+      </div>
+    </section>
+
+    <section class="gt-form-section gt-actions"></section>
+
+    <section class="gt-form-section gt-action-toggles">
+      <button data-action="notification" class="gt-button gt-button-light-gray gt-button-small gt-add-action">&#043; send a notification</button>
+      <button data-action="callbackUrl" class="gt-button gt-button-light-gray gt-button-small gt-add-action">&#043; post to a callback URL</button>
+      <button data-action="trackingProfile" class="gt-button gt-button-light-gray gt-button-small gt-add-action">&#043; change the tracking profile</button>
+    </section>
+
+    <section class="gt-form-section gt-extras"></section>
+
+    <section class="gt-form-section gt-trigger-extra-toggles">
+      <button data-extra="properties" class="gt-button gt-button-light-gray gt-button-small gt-add-extra">&#043; properties</button>
+      <button data-extra="rateLimit" class="gt-button gt-button-light-gray gt-button-small gt-add-extra">&#043; rate limit</button>
+      <button data-extra="times" class="gt-button gt-button-light-gray gt-button-small gt-add-extra">&#043; times</button>
+
+      {{#unless triggerId}}
+      <button data-extra="triggerId" class="gt-button gt-button-light-gray gt-button-small gt-add-extra">&#043; custom trigger ID</button>
+      {{/unless}}
+    </section>
+
+    <section class='gt-form-section gt-submit-wrapper'>
+      {{#if triggerId}}
+      <button class='gt-button gt-button-blue gt-submit'>Update</button>
+      <ul class='gt-edit-controls'>
+        <li>
+          <a class='gt-reset-delete' href='#'>&#x2716;</a>
+        </li>
+        <li>
+          <button class='gt-item-delete gt-button-delete'></button>
+        </li>
+      </ul>
+      {{else}}
+      <button class='gt-button gt-button-blue gt-submit'>Save</button>
+      {{/if}}
+    </section>
+  </form>
+</div>

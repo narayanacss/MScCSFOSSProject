@@ -1,0 +1,63 @@
+#gt-notes-region {
+  height: auto;
+  margin: 0;
+  pointer-events: none;
+  width: 60%;
+  overflow: hidden;
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.gt-active {
+  #gt-notes-region {
+    left: 40%;
+  }
+}
+
+.gt-region {
+  .gt-notification-list {
+    float: left;
+    list-style-type: none;
+    padding: .5em 3.5em 0 1em;
+    pointer-events: auto;
+    width: 300px;
+  }
+
+  .gt-notification {
+    @include border-radius(4px);
+    @include box-shadow(0 0 12px rgba(0,0,0,0.2));
+
+    background-color: $darkest-gray; // fallback
+    background-color: rgba(38,38,38, 0.8);
+    color: $white;
+    display: none;
+    margin: 4px 0;
+    padding: 14px 20px;
+    z-index: 9;
+
+    &.error {
+      background-color: #b41414;
+      background-color: rgba(180, 20, 20, 0.8);
+    }
+
+    .gt-close {
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      color: $lightest-gray;
+      float: right;
+      margin-top: -3px;
+      margin-right: -12px;
+      opacity: 0.75;
+      -webkit-appearance: none;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}

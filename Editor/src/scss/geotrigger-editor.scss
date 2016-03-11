@@ -1,0 +1,88 @@
+@import "compass";
+@import "config";
+@import "base/mixins";
+@import "base/reset";
+@import "base/typography";
+@import "base/forms";
+@import "base/buttons";
+@import "base/icons";
+@import "base/tooltips";
+
+//STRUCTURE
+@import "toolbar";
+@import "drawer";
+@import "panel";
+@import "list";
+@import "form";
+@import "notifications";
+
+#gt-regions {
+  @include clearfix;
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  hr {
+    background: $lighter-gray;
+    border: none;
+    color: $light-gray;
+    height: 1px;
+    margin: .5em 0;
+  }
+}
+
+#gt-content {
+  @include full;
+  left: 70px;
+  z-index: 0;
+
+  &.gt-active {
+    #gt-drawer-region {
+      width: 40%;
+      @include box-shadow(0 0 12px rgba(0,0,0,0.3));
+      display:block;
+    }
+    #gt-map-region {
+      width: 100%;
+    }
+  }
+}
+
+#gt-drawer-region {
+  @include full;
+  max-width:600px;
+  min-width:400px;
+  z-index: 2;
+  right: auto;
+  width: 0;
+  display: none;
+}
+
+#gt-map-region {
+  @include full;
+  left: auto;
+  width: 100%;
+  z-index: 1;
+}
+
+#gt-map {
+  @include full;
+}
+
+.gt-open-drawer {
+  width: 100%;
+  #gt-map {
+    width: 60%;
+  }
+}
+
+.gt-container {
+  box-sizing:border-box;
+  position:absolute;
+  z-index:2;
+  width:50%;
+  top:0;
+  bottom:0;
+  left:0;
+  background-color:transparent;
+}
