@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	
+<head>
+	<title>333@TNM</title>
+	<link rel='stylesheet' type='text/css' href="../css/bootstrap.css" />
+	<style>
+		body {
+			background-color: #b3daff;
+		}
+		#banner {
+			display: block;
+			margin-left: auto;
+			margin-right: auto 
+		}
+	</style>
+</head>
+
+<body style="font-family:Verdana">
+	<div class="container">
+		<div class="row " style="padding-top:40px;">
+			<img id = "banner" class="img-responsive" src="../img/banner.png" alt="geoTollways" height="200" width="1000"> 
+			<h1 class="text-center" ><span><strong>TOLL FENCE CONTROL ROOM</strong></span></br>333@TEST (DUMMY) TOLL FENCE</h1>
+			<br /><br />
+			<!-- The Messages -->
+			<div class="panel-body" id="mess">
+				<ul class="media-list">
+					<!-- Messages go here -->
+				</ul>
+			</div>
+		</div>
+	</div>	
+	<!-- Socket.io -->
+	<script src="/socket.io/socket.io.js"></script>
+
+	<!-- javascript -->
+	<script>
+		var socket = io();
+		socket.on('message', function(msg){
+			var vehicle = msg.split(',');
+			var image = "" + vehicle[2]; //Include url
+			var markup = '<li class="media">' + '<div class="panel panel-info">' + 
+			 '<div class="panel-heading">' + vehicle[0] + '</div>' +
+			 '<a class="pull-left" target="_blank" href="' + image + '">' + 
+		     '<img class="media-object img-circle" class="img-responsive" style="padding-top:5px;" height="150" width="150" src="' + image + '" />' +
+		     '</a>' + '<div class="media-body">' + '<h2>' + vehicle [1] + '</h2>' + 
+		     '<br />' + '<hr />' + '<h3 class="text-muted">' + vehicle[4] + '</h3>' + 
+		     '<input type="button"  value="Pending" onclick="remove()" style="float: right;"/>' +
+		     '</div>' + '</div>' + '</li>'; 
+			document.getElementById("mess").children[0].innerHTML += markup;
+		});
+		
+		function remove() {
+			alert("OK");
+		}
+	</script>
+</body>
+
+</html>
+

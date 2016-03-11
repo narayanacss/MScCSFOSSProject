@@ -1,0 +1,19 @@
+{
+	"name": "geoAdminServer",
+	"version": "0.0.1",
+	"dependencies": {
+		"express": "*", 
+		"mongoose": "*",	
+		"connect": "~2.14.4",
+                "mysql": "*",
+                "async": "*",
+	        "mysql-events": "*",
+                "request-ip": "*",
+		"redis": "*",
+                "socket.io": "*",
+                "socket.io-client": "*",
+                "twilio": "*",
+                "body-parser":"*",
+                "http-proxy":"*"
+  	}
+}
