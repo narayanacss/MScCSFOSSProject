@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Admin@geoTollways</title>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="js/kickstart.js"></script> <!-- KICKSTART -->
+		<link rel="stylesheet" href="css/kickstart.css" media="all" /> <!-- KICKSTART -->	
+		<style>	
+			body {
+				background-color: #ffff99;
+			} 
+			#uid {
+				width: 50px;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<img src="assets/img/banner.jpg" alt="geoTollways" height="150" width="1000"> 
+		<img src="assets/img/logo.png" alt="geoTollways" height="150" width="120"> 
+		<!-- Tabs Left -->
+		<ul class="tabs left">
+		<li><a href="#tabr1"><h6 style="color:blue;">Home Page</h5></a></li>
+		<li><a href="#tabr2"><h6 style="color:blue;">User Desk</h6></a></li>
+		<li><a href="#tabr3"><h6 style="color:blue;">Manage Fences</h6></a></li>
+		<li><a href="#tabr4"><h6 style="color:blue;">Control Room</h5></a></li>
+		<li><a href="#tabr5"><h6 style="color:blue;">Central Server</h5></a></li>
+		</ul>
+
+		<div id="tabr1" class="tab-content">
+		<!-- Slideshow -->
+		<ul class="slideshow">
+		<li><img src="assets/img/highways.jpg" width="100" height="350" /></li>
+		<li><img src="assets/img/highways2.jpg" width="100" height="350" /></li>
+		<li><img src="assets/img/safe.jpg" width="100" height="350" /></li>
+		<li><img src="assets/img/highways3.jpg" width="100" height="350" /></li>
+		<li><img src="assets/img/highways4.jpg" width="100" height="350" /></li>
+		<li><img src="assets/img/poster.jpg" width="100" height="350" /></li>
+		</ul>
+		</div>
+		<div id="tabr2" class="tab-content">
+			<img src="assets/img/customer.jpg" id="tab2" width="600" height="350" />
+			<button class="large orange" onclick="window.open('https://accounts.google.com/');" target="_blank"><i class="fa fa-minus-square"></i>Customer Cell</button>
+			<form action="http://52.74.45.124:8080/geoCreateUser" method="POST" name="createUser" target="_blank">
+				user id:<input type="number" name="uid" id="uid" min="1" max="20" size="1">
+				<button class="large green" type="submit"><i class="fa fa-leaf"></i> Create user</button>
+			</form>	
+		</div>
+		<div id="tabr3" class="tab-content">
+			<img src="assets/img/geofence.jpg" id="tab2" width="600" height="350" />
+			<button class="large red" onclick="window.open('http://127.0.0.1:8080/');" target="_blank"><i class="fa fa-pencil"></i>Edit Fences</button>
+		</div>
+		<div id="tabr4" class="tab-content">
+			<img src="assets/img/controlroom.jpg" id="tab2" width="600" height="350" />
+			<img src="assets/img/map.png" id="tab2" width="535" height="350" onclick="window.open(this.src)"/>
+			<!-- Menu Vertical Right -->
+			<ul class="menu">
+			<li><a href="login1.html" target="_blank">111@JA</a></li>
+			<li><a href="login2.html" target="_blank">222@CGL</a></li>
+			<li><a href="login3.html" target="_blank">333@TNM</a></li>
+			<li><a href="http://www.nhtis.org/map.htm" target="_blank">MAP</a></li>
+			</ul>
+		</div>
+		<div id="tabr5" class="tab-content">
+			<img src="assets/img/cloud.jpg" id="tab2" width="600" height="350" />
+			<button class="large blue" onclick="window.open('https://console.aws.amazon.com/?nc2=h_m_mc');" target="_blank"><i class="fa fa-star"></i>Server console</button>
+			<button class="large pink" onclick="window.open('http://52.74.45.124/phpmyadmin/');" target="_blank"><i class="fa fa-folder"></i>Main DB</button>
+			<button class="large orange" onclick="window.open('http://52.74.45.124/geoTollways/');" target="_blank"><i class="fa fa-globe"></i>Portal</button>
+		</div>
+	</body>
+</html>
+

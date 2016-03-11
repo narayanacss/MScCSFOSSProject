@@ -1,0 +1,57 @@
+<script src="js/js.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/styles.css" />
+ 
+ <style> 
+	#banner {
+		position: relative;
+		-webkit-animation-name: example;
+		-webkit-animation-duration: 10s; 
+		-webkit-animation-iteration-count: infinite; 
+	}
+
+	/* Standard syntax */
+	@keyframes example {
+		0%   {left:-400px; top:0px;}
+		25%  {left: 0px; top:0px;}
+		50%  {left:100px; top:100px;}
+		75%  {left:-400px; top:100px;}
+		100% {left:-400px; top:0px;}
+	}
+</style>
+
+<!-- This is a very simple parallax effect achieved by simple CSS 3 multiple backgrounds, made by http://twitter.com/msurguy -->
+<div class="container">
+    <div class="row vertical-offset-100">
+    	<div class="col-md-4 col-md-offset-4">
+    		<div class="panel panel-default">
+			  	<div class="panel-heading">
+			    	<h3 class="panel-title">Please sign in</h3>
+			 	</div>
+			  	<div class="panel-body">
+			    	<form accept-charset="UTF-8" role="form" method="post" name="loginOperator" onsubmit="return validate();" action="http://52.74.45.124:3011">
+                    <fieldset>
+			    	  	<div class="form-group">
+			    		    <input class="form-control" placeholder="Fence ID" name="fenceID" type="text">
+			    		</div>
+			    		<div class="form-group">
+			    			<input class="form-control" placeholder="Password" name="password" type="password">
+			    		</div>
+			    		<input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+			    	</fieldset>
+			    	<div id="banner">
+						<img src="assets/img/banner.jpg" alt="geoTollways" height="150" width="1000" align="middle"> 
+			    	</div>
+			      	</form>
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>

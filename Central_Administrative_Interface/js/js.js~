@@ -1,0 +1,14 @@
+// JavaScript Document
+
+function validate(){
+	alert('yes');
+	var password = document.forms["loginOperator"]["password"].value;;
+	alert(password);
+	if (password != "gaura123"){
+		    alert ("Invalid credentials!");
+			return false;
+	}
+	else return true;
+}
+
+
