@@ -1,0 +1,36 @@
+<?php
+
+//For User Profile Form
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+
+function geoServer_sync_form_user_profile_form_alter(&$form, &$form_state, $form_id){
+        $form['#validate'][] = 'geoServer_sync_user_profile_validate';
+}
+
+/**
+ * Custom validation handler
+ */
+function geoServer_sync_user_profile_validate($form, &$form_state) {
+	global $user;
+        $base_url = ''; //Include url
+        $data = array(
+                'uid' => $user->uid,
+        );
+        $data = drupal_json_encode($data);
+        $options = array(
+                'headers' => array(
+                        'Content-Type' => 'application/json',
+                        ),
+                'method' => 'POST',
+                'data' => $data
+        );
+        $response = drupal_http_request($base_url, $options);
+        $data = json_decode($response->data);
+        // Check if post was successful
+        if ($response->code != 200) {
+                form_set_error('', t('Internal server error. Please try again.'));
+        }
+}

@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @file
+ * geoWallet module
+ */
+
+
+/**
+ * Load module include files.
+ */
+module_load_include('inc', 'geoWallet', 'geoWallet.user');
+
+
+/**
+ * Implements hook_menu_alter().
+ */
+function geoWallet_menu_alter(&$callbacks) {
+  $callbacks['user/%user_category/edit/geoWallet']['page callback'] = 'geoWallet_user_settings';
+  $callbacks['user/%user_category/edit/geoWallet']['module'] = 'geoWallet';
+  $callbacks['user/%user_category/edit/geoWallet']['page arguments'] = array(1);
+  $callbacks['user/%user_category/edit/geoWallet']['file'] = 'geoWallet.pages.inc';
+  $callbacks['user/%user_category/edit/geoWallet']['access callback'] = array('geoWallet_edit_access');
+}
+
+/**
+ * Implements hook_permission().
+ */
+function geoWallet_permission() {
+  return array(
+    'edit own topup' => array(
+      'title' => t('Edit own topup'),
+      'description' => t('Edit your own geoWallet topup'),
+    ),
+  );
+}
+
+/**
+ * Access callback for geoWallet account editing.
+ */
+function geoWallet_edit_access($account) {
+  return user_edit_access($account) && user_access('edit own topup');
+}
+
+
+/**
+ * Implements hook_views_api().
+ */
+function geoWallet_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'geoWallet'),
+  );
+} 

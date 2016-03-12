@@ -1,0 +1,46 @@
+<?php
+/**
+ * @file
+ * Install and uninstall functions for the geoWallet module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function geoWallet_install() {
+  $t = get_t();
+  drupal_set_message($t("geoWallet module successfully installed."));
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function geoWallet_uninstall() {
+}
+
+/**
+ * Implements hook_schema().
+ */
+function geoWallet_schema() {
+  $schema['geoWallet_balance'] = array(
+    'fields' => array(
+      'uid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'bal' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+	    'default' => 0,
+      ),
+    ),
+    'primary key' => array('uid'),
+  );
+  return $schema;
+}
+
+
+
+

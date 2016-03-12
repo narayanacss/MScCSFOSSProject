@@ -1,0 +1,4 @@
+name = geoServer_sync
+description = geoServer connection module
+core = 7.x
+package = geoTollways

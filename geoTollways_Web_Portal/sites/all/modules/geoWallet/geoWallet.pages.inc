@@ -1,0 +1,170 @@
+<?php
+/**
+ * @file
+ * User facing pages
+ */
+
+/**
+ * Menu callback for adding and confirming a user's mobile number.
+ */
+function geoWallet_user_settings($account) {
+  return drupal_get_form('geoWallet_user_settings_form', $account);
+}
+
+/**
+ * User settings form.
+ */
+function geoWallet_user_settings_form($form, &$form_state, $account) {
+
+  if (isset($form_state['values']['account'])) {
+    $account = user_load($form_state['values']['account']->uid);
+  }
+
+  $form['#prefix'] = '<div id="geoWallet-user-form">';
+  $form['#suffix'] = '</div>';
+
+  $form['uid'] = array(
+    '#type' => 'hidden',
+    '#value' => $account->uid,
+  );
+  
+  $baln = geoWallet_retrieve($account);
+  if (empty($baln)) {
+    $form['info'] = array(
+      '#type' => 'item',
+      '#title' => t('geoWallet'),
+      '#markup' => 'Balance Amount: &#8377; 0',
+      '#description' => t('(Minimum Balance: &#8377; 1000)'),
+    );
+    $form['topup'] = array(
+      '#type' => 'select',
+      '#title' => t('Top-up'),
+      '#options' => array(t(1000), t(1500), t(2000), t(2500), t(3000)),
+    );
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Pay'),
+      '#validate' => array('geoWallet_user_settings_form_validate'),
+      '#submit' => array('geoWallet_user_settings_form_submit'),
+      '#ajax' => array(
+        'callback' => 'geoWallet_user_settings_ajax_callback',
+        'wrapper' => 'geoWallet-user-form',
+        'method' => 'replace',
+      ),
+    );
+  } else {
+	 $form['info'] = array(
+      '#type' => 'item',
+      '#title' => t('geoWallet'),
+      '#markup' => 'Balance Amount: &#8377; '. $account->geoWallet_balance['bal'],
+      '#description' => t('(Minimum Balance: &#8377; 1000)'),
+    );
+    $form['topup'] = array(
+      '#type' => 'select',
+      '#title' => t('Top-up'),
+      '#options' => array(t(500), t(1000), t(1500), t(2000), t(2500), t(3000)),
+    );
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Pay'),
+      '#validate' => array('geoWallet_user_settings_form_validate'),
+      '#submit' => array('geoWallet_user_settings_form_submit'),
+      '#ajax' => array(
+        'callback' => 'geoWallet_user_settings_ajax_callback',
+        'wrapper' => 'geoWallet-user-form',
+        'method' => 'replace',
+      ),
+    );   
+  }
+  return $form;
+}
+
+/**
+ * Ajax callback for user forms.
+ */
+function geoWallet_user_settings_ajax_callback($form, &$form_state) {
+  return $form;
+}
+
+/**
+ * Validation function for user settings form.
+ *
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function geoWallet_user_settings_form_validate($form, &$form_state) {
+	
+}
+
+/**
+ * Submit handler for user settings form.
+ *
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function geoWallet_user_settings_form_submit($form, &$form_state, $account = NULL) {
+  if (!$account) {
+    $account = user_load($form_state['values']['uid']);
+  }
+  $query = db_select('geoWallet_balance', 'g')
+           ->fields('g', array('bal'))
+           ->condition('g.uid', $account->uid)
+           ->execute();
+  $result = $query->fetchObject();
+  $val = $result->bal;
+  $cal = $val + $form['topup']['#options'][$form_state['values']['topup']];
+  $data = array(
+    'uid' => $account->uid,
+    'bal' => $cal,
+  );
+  $account = user_save($account, array('geoWallet' => $data), 'geoWallet');
+  drupal_set_message(t('Top-up successful!'), 'status');
+  $form_state['values']['account'] = $account;
+  $GLOBALS['baln'] = $data->bal;
+  $form_state['rebuild'] = TRUE;
+  drupal_set_message('<pre>'. print_r('&#8377;'.$form['topup']['#options'][$form_state['values']['topup']].' added to your geoWallet.', true) .'</pre>'); 
+}
+
+function geoWallet_retrieve($account){
+  if (empty($account->geoWallet_balance['bal'])) {
+	$val = 0;
+    return $val;
+  } else {
+      $query = db_select('geoWallet_balance', 'g')
+           ->fields('g', array('bal'))
+           ->condition('g.uid', $account->uid)
+           ->execute();
+      $result = $query->fetchObject();
+      $val = $result->bal;
+      return $val;
+    }
+}
+
+/**
+ * Validation handler for user settings confirmation form.
+ *
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function geoWallet_user_settings_confirm_form_validate($form, &$form_state) {
+	
+}
+
+/**
+ * Submit handler for user settings confirmation form.
+ *
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
+function geoWallet_user_settings_confirm_form_submit($form, &$form_state) {
+  $account = user_load($form_state['values']['uid']);
+  $data = array(
+    'uid' => $account->uid,
+    'bal' => $form['topup']['#options'][$form_state['values']['topup']],
+  );
+  $account = user_save($account, array('geoWallet' => $data), 'geoWallet');
+  drupal_set_message(t('Topup successful.'), 'status');
+  $form_state['values']['account'] = $account;
+  $form_state['rebuild'] = TRUE;
+}
+

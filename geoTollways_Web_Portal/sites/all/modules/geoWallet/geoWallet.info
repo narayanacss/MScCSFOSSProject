@@ -1,0 +1,5 @@
+name = geoWallet
+description = Integration of geoWallet functionality
+core = 7.x
+package = geoTollways
+
